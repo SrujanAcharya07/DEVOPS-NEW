@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Asset</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="theme-body">
+    <div class="page-shell">
+        <header class="app-header">
+            <div>
+                <h1>Edit asset posture data</h1>
+                <p>Update the workload details and let the posture engine recalculate its risk profile.</p>
+            </div>
+            <a class="button-link" href="/report">Cancel</a>
+        </header>
+
+        <main class="card form-card">
+            <form method="POST">
+                <div class="form-group">
+                    <label for="asset_name">Asset name</label>
+                    <input id="asset_name" type="text" name="asset_name" value="{{ asset['asset_name'] }}" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="asset_type">Service type</label>
+                        <select id="asset_type" name="asset_type">
+                            <option {% if asset['asset_type'] == 'EC2' %}selected{% endif %}>EC2</option>
+                            <option {% if asset['asset_type'] == 'S3' %}selected{% endif %}>S3</option>
+                            <option {% if asset['asset_type'] == 'Database' %}selected{% endif %}>Database</option>
+                            <option {% if asset['asset_type'] == 'VM' %}selected{% endif %}>VM</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="environment">Environment</label>
+                        <select id="environment" name="environment">
+                            <option {% if asset['environment'] == 'Production' %}selected{% endif %}>Production</option>
+                            <option {% if asset['environment'] == 'Staging' %}selected{% endif %}>Staging</option>
+                            <option {% if asset['environment'] == 'Development' %}selected{% endif %}>Development</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="region">Region</label>
+                        <input id="region" type="text" name="region" value="{{ asset['region'] }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="owner">Owner</label>
+                        <input id="owner" type="text" name="owner" value="{{ asset['owner'] }}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="public_access">Public access</label>
+                        <select id="public_access" name="public_access">
+                            <option {% if asset['public_access'] == 'Yes' %}selected{% endif %}>Yes</option>
+                            <option {% if asset['public_access'] == 'No' %}selected{% endif %}>No</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="encryption">Encryption</label>
+                        <select id="encryption" name="encryption">
+                            <option {% if asset['encryption'] == 'Yes' %}selected{% endif %}>Yes</option>
+                            <option {% if asset['encryption'] == 'No' %}selected{% endif %}>No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="compliance_status">Compliance status</label>
+                        <select id="compliance_status" name="compliance_status">
+                            <option {% if asset['compliance_status'] == 'Compliant' %}selected{% endif %}>Compliant</option>
+                            <option {% if asset['compliance_status'] == 'Needs Attention' %}selected{% endif %}>Needs Attention</option>
+                            <option {% if asset['compliance_status'] == 'Critical' %}selected{% endif %}>Critical</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Current risk</label>
+                        <div class="inline-pill">{{ asset['risk_score'] }} · {{ asset['severity'] }}</div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit">Save changes</button>
+                </div>
+            </form>
+        </main>
+    </div>
+</body>
+</html>

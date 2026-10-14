@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="theme-body">
+    <div class="page-shell">
+        <header class="app-header">
+            <div>
+                <h1>Security posture report</h1>
+                <p>Review asset exposure, issue severity, and the remediation needed to improve your posture.</p>
+            </div>
+            <a class="button-link" href="/dashboard">Back to dashboard</a>
+        </header>
+
+        <section class="card report-intro">
+            <div class="report-intro-content">
+                <div>
+                    <p class="summary-label">Executive Summary</p>
+                    <h2>Current posture overview</h2>
+                    <p class="report-copy">The environment currently shows {{ metrics.critical_issues }} critical finding(s) and an average risk score of {{ metrics.average_score }}. Immediate action should focus on the highest-risk assets and public exposure points.</p>
+                </div>
+                {% if top_priority %}
+                <div class="report-highlight">
+                    <span class="summary-label">Top priority</span>
+                    <strong>{{ top_priority['asset_name'] }}</strong>
+                    <p>{{ top_priority['severity'] }} · Risk score {{ top_priority['risk_score'] }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <section class="summary-grid">
+            <article class="summary-card">
+                <span class="summary-label">Assets Reviewed</span>
+                <strong>{{ metrics.total_assets }}</strong>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Critical Findings</span>
+                <strong>{{ metrics.critical_issues }}</strong>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Average Score</span>
+                <strong>{{ metrics.average_score }}</strong>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Compliant Coverage</span>
+                <strong>{{ metrics.compliant_assets }}</strong>
+            </article>
+        </section>
+
+        <main class="card table-card">
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Asset</th>
+                            <th>Type</th>
+                            <th>Exposure</th>
+                            <th>Severity</th>
+                            <th>Risk Score</th>
+                            <th>Remediation</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in findings %}
+                        <tr>
+                            <td>
+                                <strong>{{ item['asset_name'] }}</strong><br>
+                                <span class="muted">{{ item['environment'] }} · {{ item['region'] }}</span>
+                            </td>
+                            <td>{{ item['asset_type'] }}</td>
+                            <td>{{ item['public_access'] }} / {{ item['encryption'] }}</td>
+                            <td><span class="status-badge {{ item['severity'] | lower }}">{{ item['severity'] }}</span></td>
+                            <td>{{ item['risk_score'] }}</td>
+                            <td class="remediation-cell">{{ item['remediation'] }}</td>
+                            <td class="action-cell">
+                                <a class="button-link small" href="{{ url_for('edit_asset', asset_id=item['id']) }}">Edit</a>
+                                <a class="button-link button-danger small" href="{{ url_for('delete_asset', asset_id=item['id']) }}">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

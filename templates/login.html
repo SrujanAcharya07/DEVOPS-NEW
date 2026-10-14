@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSPM Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="theme-body">
+    <div class="page-shell login-shell">
+        <header class="app-header center-header">
+            <div>
+                <h1>Cloud Security Posture Management</h1>
+                <p>Bring visibility, continuous assessment, and remediation planning into one control center for cloud risk.</p>
+            </div>
+        </header>
+
+        {% if error %}
+        <div class="error-card">
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+
+        <main class="card form-card login-card">
+            <h2>Secure access</h2>
+            <form method="POST" action="/login">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input id="username" type="text" name="username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" name="password" placeholder="Enter password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit">Sign in</button>
+                </div>
+            </form>
+            <p class="muted small">Demo access: srujan / bcacccs</p>
+        </main>
+    </div>
+</body>
+</html>

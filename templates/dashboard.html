@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSPM Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="theme-body">
+    <div class="page-shell">
+        <header class="app-header">
+            <div>
+                <h1>Cloud Security Posture Management</h1>
+                <p>Monitor cloud resources, quantify exposure, and prioritize remediation across your environment.</p>
+            </div>
+            <div class="header-actions">
+                <a class="button-link secondary" href="/scan">Run Posture Scan</a>
+                <a class="button-link" href="/logout">Logout</a>
+            </div>
+        </header>
+
+        <section class="card connection-card">
+            <div class="card-heading">
+                <div>
+                    <h2>Cloud connector</h2>
+                    <p class="muted">Real vulnerability discovery requires a live cloud account connection. This demo uses local sample data until a provider is linked.</p>
+                </div>
+                {% if cloud_connected %}
+                <span class="status-badge low">Connected to {{ cloud_provider }} · {{ cloud_account }}</span>
+                {% else %}
+                <span class="status-badge medium">Not connected</span>
+                {% endif %}
+            </div>
+            <form method="POST" action="/connect-cloud" class="connection-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="provider">Cloud provider</label>
+                        <select id="provider" name="provider">
+                            <option>AWS</option>
+                            <option>Azure</option>
+                            <option>GCP</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="account_name">Account or subscription name</label>
+                        <input id="account_name" type="text" name="account_name" placeholder="Example: Production-Account">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit">Connect account</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="summary-grid">
+            <article class="summary-card">
+                <span class="summary-label">Assets Monitored</span>
+                <strong>{{ metrics.total_assets }}</strong>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Critical Issues</span>
+                <strong>{{ metrics.critical_issues }}</strong>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Compliant Assets</span>
+                <strong>{{ metrics.compliant_assets }}</strong>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Average Risk</span>
+                <strong>{{ metrics.average_score }}</strong>
+            </article>
+        </section>
+
+        <main class="content-grid">
+            <section class="card form-card">
+                <h2>Add monitored asset</h2>
+                <form method="POST">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="asset_name">Asset name</label>
+                            <input id="asset_name" type="text" name="asset_name" placeholder="e.g. payment-gateway" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="asset_type">Service type</label>
+                            <select id="asset_type" name="asset_type">
+                                <option>EC2</option>
+                                <option>S3</option>
+                                <option>Database</option>
+                                <option>VM</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="environment">Environment</label>
+                            <select id="environment" name="environment">
+                                <option>Production</option>
+                                <option>Staging</option>
+                                <option>Development</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="region">Region</label>
+                            <input id="region" type="text" name="region" value="us-east-1">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="owner">Owner</label>
+                            <input id="owner" type="text" name="owner" value="Platform Team">
+                        </div>
+                        <div class="form-group">
+                            <label for="compliance_status">Compliance status</label>
+                            <select id="compliance_status" name="compliance_status">
+                                <option>Compliant</option>
+                                <option selected>Needs Attention</option>
+                                <option>Critical</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="public_access">Public access</label>
+                            <select id="public_access" name="public_access">
+                                <option>No</option>
+                                <option>Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="encryption">Encryption</label>
+                            <select id="encryption" name="encryption">
+                                <option>Yes</option>
+                                <option>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Add asset</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="card table-card">
+                <div class="card-heading">
+                    <h2>Asset inventory</h2>
+                    <a class="button-link small" href="/report">View full report</a>
+                </div>
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Asset</th>
+                                <th>Type</th>
+                                <th>Region</th>
+                                <th>Risk</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for asset in assets %}
+                            <tr>
+                                <td>
+                                    <strong>{{ asset['asset_name'] }}</strong><br>
+                                    <span class="muted">{{ asset['owner'] }}</span>
+                                </td>
+                                <td>{{ asset['asset_type'] }}</td>
+                                <td>{{ asset['region'] }}</td>
+                                <td>
+                                    <span class="status-badge {{ asset['severity'] | lower }}">{{ asset['risk_score'] }}</span>
+                                </td>
+                                <td>{{ asset['severity'] }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

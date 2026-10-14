@@ -1,0 +1,351 @@
+:root {
+    color-scheme: light;
+    --bg: #f5f7fb;
+    --panel: #ffffff;
+    --panel-border: #e5e7eb;
+    --text: #1d1d1f;
+    --muted: #6e6e73;
+    --accent: #2563eb;
+    --accent-strong: #3b82f6;
+    --danger: #dc2626;
+    --success: #16a34a;
+    --shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body.theme-body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: linear-gradient(180deg, #fafafa 0%, var(--bg) 100%);
+    color: var(--text);
+}
+
+.page-shell {
+    width: min(1240px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 2rem 0 3rem;
+}
+
+.login-shell {
+    max-width: 680px;
+}
+
+.app-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    gap: 1rem;
+}
+
+.center-header {
+    justify-content: center;
+    text-align: center;
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: clamp(1.75rem, 2.5vw, 2.6rem);
+}
+
+.app-header p {
+    margin: 0.55rem 0 0;
+    color: var(--muted);
+    max-width: 720px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+}
+
+.form-card {
+    width: 100%;
+}
+
+.login-card {
+    max-width: 100%;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1.04fr 1.4fr;
+    gap: 1.75rem;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.connection-card {
+    margin-bottom: 1.25rem;
+}
+
+.connection-form {
+    margin-top: 0.6rem;
+}
+
+.report-intro {
+    margin-bottom: 1.25rem;
+}
+
+.report-intro-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.report-copy {
+    color: var(--muted);
+    max-width: 700px;
+    margin: 0.35rem 0 0;
+}
+
+.report-highlight {
+    min-width: 220px;
+    padding: 1rem 1.1rem;
+    border-radius: 16px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+}
+
+.report-highlight strong {
+    display: block;
+    margin: 0.3rem 0;
+    font-size: 1.05rem;
+}
+
+.report-highlight p {
+    margin: 0;
+    color: var(--muted);
+}
+
+.summary-card {
+    background: #fcfcfd;
+    border: 1px solid #eceef2;
+    border-radius: 18px;
+    padding: 1.1rem 1.2rem;
+}
+
+.summary-label {
+    display: block;
+    color: var(--muted);
+    margin-bottom: 0.45rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.summary-card strong {
+    font-size: 1.5rem;
+}
+
+.card-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 0.75rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.45rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+input[type="text"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border-radius: 12px;
+    border: 1px solid #d9dce3;
+    background: #fbfcfe;
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+input::placeholder,
+select {
+    color: var(--muted);
+}
+
+button,
+.button-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 1.1rem;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover,
+.button-link:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 22px rgba(37, 99, 235, 0.16);
+}
+
+.button-link.secondary {
+    background: #f2f4f8;
+    color: var(--text);
+}
+
+.button-link.small {
+    padding: 0.7rem 0.9rem;
+    font-size: 0.9rem;
+}
+
+.error-card {
+    background: #fff4f4;
+    border: 1px solid #f5c2c7;
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    margin: 0 0 1.5rem;
+    color: #a42828;
+}
+
+button.button-danger,
+.button-link.button-danger {
+    background: linear-gradient(135deg, #ef4444, #f87171);
+    color: #ffffff;
+}
+
+.action-cell {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    align-items: center;
+}
+
+.table-card {
+    overflow: hidden;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 680px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 0.95rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eceef2;
+}
+
+.data-table th {
+    color: var(--accent);
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.data-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.remediation-cell {
+    max-width: 320px;
+    white-space: normal;
+    line-height: 1.5;
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.small {
+    font-size: 0.9rem;
+}
+
+.status-badge {
+    display: inline-flex;
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    background: rgba(255,255,255,0.1);
+}
+
+.status-badge.critical {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.status-badge.high {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-badge.medium {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.status-badge.low {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.inline-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.8rem 0.95rem;
+    border-radius: 12px;
+    background: #f5f7fb;
+    color: var(--text);
+    border: 1px solid #e5e7eb;
+}
+
+@media (max-width: 980px) {
+    .content-grid,
+    .form-row,
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
